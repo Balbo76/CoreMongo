@@ -1,0 +1,78 @@
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: development
+    ports:
+      - 3000:3000
+    stdin_open: true
+    working_dir: /usr/src/app/frontend
+    command: ["npm", "run", "dev"]
+    volumes:
+      - .:/usr/src/app                             # Monta il codice locale
+      - /usr/src/app/node_modules                  # Protegge i moduli della root
+      - /usr/src/app/frontend/node_modules         # <--- AGGIUNGI QUESTO: Protegge i moduli del frontend
+      - /usr/src/app/shared/node_modules           # <--- AGGIUNGI QUESTO: Protegge i moduli dello shared
+    restart: always
+    networks:
+      - react-express
+    depends_on:
+      - backend
+
+  backend:
+    restart: always
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: development
+    working_dir: /usr/src/app/backend
+    command: ["npm", "run", "dev"]
+    volumes:
+      - .:/usr/src/app                             # Monta il codice locale
+      - /usr/src/app/node_modules                  # Protegge i moduli della root
+      - /usr/src/app/backend/node_modules          # <--- AGGIUNGI QUESTO: Protegge i moduli del backend
+      - /usr/src/app/shared/node_modules           # <--- AGGIUNGI QUESTO: Protegge i moduli dello shared
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+      - react-express
+    ports:
+      - 3001:3000
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+    networks:
+      - express-mongo
+    depends_on:
+      - mongo
+
+  mongo:
+    restart: always
+    image: mongo:6.0
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+
+networks:
+  react-express:
+  express-mongo:
+
+volumes:
+  mongo_data:
