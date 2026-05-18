@@ -1,0 +1,51 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: production
+    ports:
+      - 3000:3000
+    restart: always
+    networks:
+      - react-express
+    depends_on:
+      - backend
+
+  backend:
+    restart: always
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: production
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://admin:pass@mongo:27017/provolone?authSource=admin
+      - JWT_SECRET=una_stringa_segreta_e_molto_lunga_per_i_token_jwt
+    ports:
+      - 3001:3000
+    depends_on:
+      - mongo
+    networks:
+      - express-mongo
+      - react-express
+
+  mongo:
+    restart: always
+    image: mongo:6.0
+    volumes:
+      - mongo_prod_data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+
+networks:
+  react-express:
+  express-mongo:
+
+volumes:
+  mongo_prod_data:

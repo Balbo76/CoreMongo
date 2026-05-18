@@ -8,7 +8,7 @@ export default [
     route("forgot-password", "routes/auth.forgot-password.tsx"),
 
     layout("routes/_protected.tsx", [
-        route("admin/","routes/_protected._index.tsx"),
+        route("admin", "routes/_protected._index.tsx"),
         route("admin/components", "routes/_protected.components.tsx"),
         route("admin/profile", "routes/_protected.profile.tsx"),
         route("admin/settings", "routes/_protected.settings.tsx"),

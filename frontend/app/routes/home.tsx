@@ -11,8 +11,9 @@ export function meta({}: Route.MetaArgs) {
 
 export async function clientLoader() {
   await redirectIfAuthenticated();
-  return null;
+  return {};
 }
+
 
 export default function Home() {
   return <Welcome />;

@@ -6,10 +6,11 @@ import { validate } from '../middleware/validateMiddleware';
 import { registerSchema, loginSchema } from '@atlasscale/shared';
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
+import { Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
-router.post('/register', validate(registerSchema), catchAsync(async (req, res, next) => {
+router.post('/register', validate(registerSchema), catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     
     const existingUser = await User.findOne({ email });
@@ -30,7 +31,7 @@ router.post('/register', validate(registerSchema), catchAsync(async (req, res, n
 }));
 
 
-router.post('/login', validate(loginSchema), catchAsync(async (req, res, next) => {
+router.post('/login', validate(loginSchema), catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     

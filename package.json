@@ -8,10 +8,20 @@
   ],
   "scripts": {
     "docker:dev": "docker compose up -d",
-    "docker:build": "docker compose up -d --build",
+    "docker:build": "docker compose build  --no-cache",
     "docker:stop": "docker compose down",
     "docker:logs": "docker compose logs -f",
     "test": "docker compose exec backend npm test",
-    "test:watch": "docker compose exec backend npx vitest"
+    "test:watch": "docker compose exec backend npx vitest",
+    "lint": "eslint .",
+    "prod:build": "docker compose -f docker-compose.prod.yml build --no-cache",
+    "prod:up": "docker compose -f docker-compose.prod.yml up -d",
+    "prod:stop": "docker compose -f docker-compose.prod.yml down",
+    "prod:logs": "docker compose -f docker-compose.prod.yml logs -f"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.4.0",
+    "typescript-eslint": "^8.59.3"
   }
 }

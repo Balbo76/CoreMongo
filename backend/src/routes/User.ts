@@ -3,10 +3,11 @@ import { Router } from "express";
 import { User } from "../models/Users";
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
+import { Request, Response, NextFunction } from 'express';
 
 const router = Router();
 
-router.get('/me', authMiddleware, catchAsync(async (req: AuthRequest, res, next) => {
+router.get('/me', authMiddleware, catchAsync(async (req: AuthRequest, res: Response, next: NextFunction) => {
     const userId = req.user?.userId;
     const user = await User.findById(userId).select('-password');
     

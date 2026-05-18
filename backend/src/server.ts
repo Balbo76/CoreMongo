@@ -53,7 +53,18 @@ app.get('/health', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Connessione DB e Avvio
+const mongoUri = process.env.MONGO_URI;
+
+console.log("--- DEBUG DI CONVERSIONE ---");
+console.log("Valore di MONGO_URI in Node:", mongoUri);
+console.log("Tutte le env lette:", Object.keys(process.env).filter(k => k.includes("MONGO")));
+console.log("----------------------------");
+
+if (!mongoUri) {
+    console.error("❌ ERRORE CRITICO: MONGO_URI è undefined nel processo Node!");
+    process.exit(1);
+}
+
 mongoose.connect(process.env.MONGO_URI as string)
   .then(() => {
     console.log('🍃 Connesso a MongoDB');

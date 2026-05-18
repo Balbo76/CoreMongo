@@ -1,8 +1,8 @@
 import { redirect, type ClientActionFunctionArgs } from "react-router";
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/auth.login";
 import { LoginForm } from "../components/loginForm";
-import { redirectIfAuthenticated } from "..//utils/auth";
-import { TopBar } from '../components/topBar';
+import { redirectIfAuthenticated } from "../utils/auth";
+import { TopBar } from "../components/topBar";
 import { loginSchema } from "@atlasscale/shared";
 
 export function meta({}: Route.MetaArgs) {
@@ -14,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 
 export async function clientLoader() {
     await redirectIfAuthenticated();
-    return null;
+    return {};
 }
 
 export async function clientAction({ request }: ClientActionFunctionArgs) {
