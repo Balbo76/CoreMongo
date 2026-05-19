@@ -60,7 +60,7 @@ export default function HeadlessDemo() {
                     {({ open }) => (
                         <>
                             <Disclosure.Button className="flex w-full justify-between rounded-lg bg-blue-100 px-4 py-2 text-left text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring focus-visible:ring-blue-500/75">
-                                <span>Cos'è AtlasScale OS?</span>                                <span className={`${open ? 'rotate-180 transform' : ''} transition-transform`}>▼</span>
+                                <span>Cos'è CoreMongo OS?</span>                                <span className={`${open ? 'rotate-180 transform' : ''} transition-transform`}>▼</span>
                             </Disclosure.Button>
                             <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
                                 È un'architettura full-stack costruita con React Router 7, Node.js e MongoDB.

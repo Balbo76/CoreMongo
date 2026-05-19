@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import { User } from '../models/Users';
 import jwt from 'jsonwebtoken';
 import { validate } from '../middleware/validateMiddleware';
-import { registerSchema, loginSchema } from '@atlasscale/shared';
+import { registerSchema, loginSchema } from '@coremongo/shared';
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
 import { Request, Response, NextFunction } from 'express';

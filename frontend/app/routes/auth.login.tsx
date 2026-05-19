@@ -3,7 +3,7 @@ import type { Route } from "./+types/auth.login";
 import { LoginForm } from "../components/loginForm";
 import { redirectIfAuthenticated } from "../utils/auth";
 import { TopBar } from "../components/topBar";
-import { loginSchema } from "@atlasscale/shared";
+import { loginSchema } from "@coremongo/shared";
 
 export function meta({}: Route.MetaArgs) {
     return [
@@ -48,7 +48,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         }
 
         const data = await response.json();
-        localStorage.setItem("atlasscale_token", data.token);
+        localStorage.setItem("coremongo_token", data.token);
         return redirect("/admin");
     } catch (e) {
         return { error: "Errore di connessione al server" };

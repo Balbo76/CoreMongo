@@ -12,6 +12,6 @@
   "include": ["src/**/*", "tests/**/*"],
   "exclude": ["node_modules", "tests/**/*.test.ts", "tests/**/*.spec.ts"],
   "paths": {
-    "@atlasscale/shared": ["../shared/src/index.ts"]
+    "@coremongo/shared": ["../shared/src/index.ts"]
   }
 }

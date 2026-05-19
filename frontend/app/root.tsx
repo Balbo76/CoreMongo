@@ -61,7 +61,7 @@ export function HydrateFallback() {
   return (
       <div className="flex h-screen w-full items-center justify-center">
         <div className="animate-pulse text-blue-600 font-medium font-mono text-xl">
-          AtlasScale OS is loading...
+          CoreMongo OS is loading...
         </div>
       </div>
   );

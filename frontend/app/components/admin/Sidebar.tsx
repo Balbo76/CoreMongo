@@ -12,7 +12,7 @@ export function Sidebar() {
         <aside className="w-72 bg-slate-900 text-white flex flex-col shadow-2xl z-20">
             <div className="p-8 text-xl font-black border-b border-slate-800 flex items-center gap-3 italic">
                 <span className="text-3xl not-italic">⛰️</span>
-                <span>ATLASSCALE <span className="text-blue-400 font-light text-sm tracking-tighter">OS</span></span>
+                <span>COREMONGO <span className="text-blue-400 font-light text-sm tracking-tighter">OS</span></span>
             </div>
 
             <nav className="flex-1 p-6 space-y-2">

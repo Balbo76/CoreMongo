@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router";
-import type { User } from "@atlasscale/shared";
+import type { User } from "@coremongo/shared";
 import { Card } from "../components/ui/Card";
 
 export default function AdminIndex() {

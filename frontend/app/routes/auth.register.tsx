@@ -3,12 +3,12 @@ import type { Route } from "./+types/home";
 import { RegisterForm } from "../components/registerForm";
 import { redirectIfAuthenticated } from "../utils/auth";
 import { TopBar } from '../components/topBar';
-import { registerSchema } from "@atlasscale/shared";
+import { registerSchema } from "@coremongo/shared";
 
 export function meta({}: Route.MetaArgs) {
     return [
-        { title: "Registrazione - AtlasScale" },
-        { name: "description", content: "Crea un nuovo account su AtlasScale" },
+        { title: "Registrazione - CoreMongo" },
+        { name: "description", content: "Crea un nuovo account su CoreMongo" },
     ];
 }
 

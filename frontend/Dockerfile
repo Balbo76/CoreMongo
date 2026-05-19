@@ -15,7 +15,7 @@ COPY shared/ ./shared/
 COPY frontend/ ./frontend/
 
 # 1. Compiliamo prima lo shared (genera shared/dist/) stando nella root
-RUN npm run build --workspace=@atlasscale/shared
+RUN npm run build --workspace=@coremongo/shared
 
 # 2. Ora entriamo nel frontend e compiliamo l'applicazione React Router
 WORKDIR /usr/src/app/frontend

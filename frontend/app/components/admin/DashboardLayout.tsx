@@ -2,7 +2,7 @@ import { useNavigation, Outlet } from "react-router";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 import { PageTransition } from "../PageTransition";
-import type { User } from "@atlasscale/shared";
+import type { User } from "@coremongo/shared";
 
 interface DashboardLayoutProps {
     user: User;

@@ -15,7 +15,7 @@
     "rootDirs": [".", "./.react-router/types"],
     "paths": {
       "~/*": ["./app/*"],
-      "@atlasscale/shared": ["../shared/src/index.ts"]
+      "@coremongo/shared": ["../shared/src/index.ts"]
     },
     "esModuleInterop": true,
     "verbatimModuleSyntax": true,

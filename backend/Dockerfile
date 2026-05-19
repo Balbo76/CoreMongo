@@ -15,7 +15,7 @@ COPY shared/ ./shared/
 COPY backend/ ./backend/
 
 # Compiliamo prima lo shared (genera shared/dist)
-RUN npm run build --workspace=@atlasscale/shared
+RUN npm run build --workspace=@coremongo/shared
 
 # Poi compiliamo il backend (genera backend/dist)
 RUN npm run build --workspace=server
@@ -37,7 +37,7 @@ COPY --chown=node:node package*.json ./
 COPY --chown=node:node backend/package*.json ./backend/
 COPY --chown=node:node shared/package*.json ./shared/
 
-RUN npm ci --omit=dev --workspace=server --workspace=@atlasscale/shared
+RUN npm ci --omit=dev --workspace=server --workspace=@coremongo/shared
 
 # Copiamo gli artefatti compilati del backend
 COPY --chown=node:node --from=build /usr/src/app/backend/dist ./backend/dist

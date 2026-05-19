@@ -1,7 +1,7 @@
 import { useLoaderData, redirect } from "react-router";
 import { checkAuth } from "../utils/auth";
 import { DashboardLayout } from "../components/admin/DashboardLayout";
-import type { User } from "@atlasscale/shared";
+import type { User } from "@coremongo/shared";
 
 export async function clientLoader() {
     const user = await checkAuth();

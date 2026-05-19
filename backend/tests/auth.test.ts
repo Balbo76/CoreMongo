@@ -17,7 +17,7 @@ app.use(globalErrorHandler);
 beforeAll(async () => {
     // Usiamo il database reale in Docker ma su una collezione/db di test dedicato
     // Il nome dell'host è 'mongo' come definito nel compose.yaml
-    const uri = process.env.MONGO_URI_TEST || 'mongodb://admin:pass@mongo:27017/atlasscale_test?authSource=admin';
+    const uri = process.env.MONGO_URI_TEST || 'mongodb://admin:pass@mongo:27017/coremongo_test?authSource=admin';
     await mongoose.connect(uri);
 });
 

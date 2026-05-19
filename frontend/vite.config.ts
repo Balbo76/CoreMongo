@@ -8,7 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "~": path.resolve(__dirname, "./app"),
-      "@atlasscale/shared": path.resolve(__dirname, "../shared/src/index.ts"),
+      "@coremongo/shared": path.resolve(__dirname, "../shared/src/index.ts"),
     },
   },
   server: {
@@ -20,11 +20,11 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ["@atlasscale/shared"],
+    exclude: ["@coremongo/shared"],
   },
   build: {
     commonjsOptions: {
-      include: [/@atlasscale\/shared/, /node_modules/],
+      include: [/@coremongo\/shared/, /node_modules/],
     },
   },
 });

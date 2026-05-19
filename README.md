@@ -1,25 +1,33 @@
-# 🧀 AtlasScale - Dashboard Project
+# 🧀 CoreMongo - Dashboard Project
 
-**AtlasScale** è un progetto di dashboard amministrativa full-stack sviluppato per esplorare l'integrazione tra React Router 7 ed Express 5 in un ambiente monorepo. L'obiettivo principale è l'applicazione di pratiche solide per la sicurezza, la gestione dei dati e l'organizzazione del codice.
-
----
-
-## 🚀 Funzionalità
-
-- **Autenticazione:** Gestione delle sessioni tramite JWT (JSON Web Tokens).
-- **Rotte Protette:** Layout dedicato per l'area riservata con controllo dell'accesso lato client.
-- **Interfaccia Utente:** Sviluppata con TailwindCSS e piccole animazioni tramite Framer Motion per migliorare l'interazione.
-- **Validazione Unificata:** Condivisione degli schemi di validazione (Zod) tra frontend e backend.
+**CoreMongo** è un progetto di dashboard amministrativa full-stack sviluppato per esplorare l'integrazione tra React Router 7 ed Express 5 in un ambiente monorepo. L'obiettivo principale è l'applicazione di pratiche solide per la sicurezza, la gestione dei dati e l'organizzazione del codice.
 
 ---
 
-## 🏗️ Architettura
+## 🏗️ Architettura e Funzionalità
 
-Il progetto è organizzato come un **Monorepo** utilizzando gli workspace di npm:
+Il progetto è strutturato come un **Monorepo** utilizzando npm workspaces, permettendo una gestione centralizzata del codice e una condivisione efficiente di tipi e logiche tra frontend e backend.
 
-- **`/frontend`**: Applicazione React Router 7. Recentemente è stato eseguito un refactoring per separare la logica delle rotte protette (`_protected.tsx`) dalla struttura visuale (`DashboardLayout.tsx`), migliorando la leggibilità.
-- **`/backend`**: API REST costruita con Express 5. Include un sistema centralizzato per la gestione degli errori e middleware per la sicurezza.
-- **`/shared`**: Pacchetto contenente i tipi TypeScript e gli schemi Zod utilizzati da entrambi i servizi.
+### 💻 Frontend (React Router 7)
+L'applicazione client è costruita per offrire un'esperienza utente fluida e reattiva, sfruttando le potenzialità del nuovo **React Router 7** (precedentemente Remix).
+- **Core Stack**: `React 19` e `React Router 7` per il rendering e il routing.
+- **Styling**: `TailwindCSS v4` per un design moderno e scalabile.
+- **UI Components**: `Headless UI` per componenti accessibili e `Framer Motion` per animazioni e transizioni di pagina (`PageTransition.tsx`).
+- **Autenticazione**: Gestione delle sessioni tramite JWT salvati in modo sicuro, con logica di protezione delle rotte centralizzata in `_protected.tsx`.
+- **Layout**: Sistema modulare con `DashboardLayout.tsx` per separare la struttura della dashboard dalla logica di navigazione.
+
+### ⚙️ Backend (Express 5)
+L'API REST è progettata seguendo i principi di modularità e sicurezza, utilizzando le ultime versioni del framework Express.
+- **Framework**: `Express 5` per una gestione ottimizzata delle richieste e delle rotte.
+- **Database**: `MongoDB` interfacciato tramite `Mongoose`, garantendo schemi di dati chiari e validazione ODM.
+- **Sicurezza**: Implementazione di `Helmet.js` per gli header di sicurezza, `express-rate-limit` per la prevenzione di attacchi brute-force e `mongo-sanitize` per bloccare NoSQL Injection.
+- **Middleware**: Sistema centralizzato per la gestione degli errori (`errorHandler.ts`) e middleware di validazione basati su Zod.
+- **Autenticazione**: Hashing delle password con `Bcrypt` e generazione di token tramite `jsonwebtoken`.
+
+### 📦 Shared Package
+Il cuore della coerenza del progetto risiede nel pacchetto `/shared`.
+- **Single Source of Truth**: Gli schemi di validazione `Zod` sono definiti qui e utilizzati sia dal backend (per validare le request) che dal frontend (per la validazione dei form).
+- **Type Safety**: Condivisione dei tipi TypeScript per assicurare che i dati siano coerenti lungo tutto il flusso (API -> Client).
 
 ---
 
@@ -37,17 +45,19 @@ La sicurezza è stata gestita attraverso diversi livelli di protezione:
 
 ## 🛠️ Tech Stack
 
-| Tecnologia | Utilizzo |
-| :--- | :--- |
-| **React Router 7** | Framework Frontend |
-| **Express 5** | Framework Backend |
-| **MongoDB** | Database NoSQL |
-| **Mongoose** | Object Data Modeling (ODM) per MongoDB |
-| **TypeScript** | Linguaggio di programmazione |
-| **Zod** | Validazione dati |
-| **TailwindCSS** | Styling |
-| **Headless UI** | Componenti UI accessibili e senza stile |
-| **Docker** | Containerizzazione |
+| Tecnologia | Utilizzo | Versione |
+| :--- | :--- | :--- |
+| **React Router 7** | Framework Frontend & Routing | 7.15.0 |
+| **Express 5** | Framework Backend API | 5.2.1 |
+| **MongoDB / Mongoose** | Database NoSQL & ODM | Mongoose 9.6.2 |
+| **TypeScript** | Linguaggio di programmazione | 6.0.3 (Backend) / 5.9.3 (Frontend) |
+| **Zod** | Validazione dati (Shared) | 4.4.3 |
+| **TailwindCSS** | Styling (Utility-first CSS) | 4.2.2 |
+| **Headless UI** | Componenti UI accessibili | 2.2.10 |
+| **Framer Motion** | Animazioni e Transizioni | 12.38.0 |
+| **JWT / Bcrypt** | Sicurezza e Autenticazione | - |
+| **Docker** | Containerizzazione | - |
+| **Vitest** | Unit & Integration Testing | 3.0.0 |
 
 ---
 
@@ -69,19 +79,60 @@ La sicurezza è stata gestita attraverso diversi livelli di protezione:
 
 ## ⚙️ Setup
 
-Il progetto è configurato per essere eseguito tramite Docker Compose.
+Il progetto è configurato per essere gestito comodamente tramite **Docker** e script **NPM** centralizzati nella root.
 
-1.  **Configurazione:**
-    Crea i file `.env` nelle cartelle `frontend` e `backend` partendo dai file `.env.example`.
-2.  **Esecuzione:**
-    ```bash
-    docker compose up -d --build
-    ```
+### 1. Configurazione Variabili d'Ambiente
+Prima di iniziare, crea i file `.env` nelle cartelle `frontend` e `backend` partendo dai file `.env.example`:
+```bash
+cp frontend/.env.example frontend/.env
+cp backend/.env.example backend/.env
+```
 
-### Accesso
+### 2. Gestione tramite NPM Scripts (Consigliato)
+Dalla root del progetto, puoi utilizzare i seguenti comandi per gestire l'intero stack Docker:
+
+- **Avvio Sviluppo:**
+  ```bash
+  npm run docker:dev
+  ```
+- **Build Completa (senza cache):**
+  ```bash
+  npm run docker:build
+  ```
+- **Arresto Stack:**
+  ```bash
+  npm run docker:stop
+  ```
+- **Visualizzazione Log:**
+  ```bash
+  npm run docker:logs
+  ```
+- **Esecuzione Test:**
+  ```bash
+  npm run test
+  ```
+
+### 3. Modalità Produzione
+Per testare l'applicazione in un ambiente simile alla produzione:
+
+- **Build e Avvio Produzione:**
+  ```bash
+  npm run prod:build && npm run prod:up
+  ```
+- **Arresto Produzione:**
+  ```bash
+  npm run prod:stop
+  ```
+- **Log Produzione:**
+  ```bash
+  npm run prod:logs
+  ```
+
+### 4. Accesso ai Servizi
+Una volta avviato lo stack:
 - **Frontend:** `http://localhost:3000`
 - **Backend:** `http://localhost:3001`
-- **Mongo Express:** `http://localhost:8081`
+- **Mongo Express:** `http://localhost:8081` (Interfaccia web per MongoDB)
 
 ---
 *Progetto creato a scopo didattico e professionale per testare l'integrazione di tecnologie moderne.*
