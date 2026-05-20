@@ -18,6 +18,12 @@
     "prod:up": "docker compose -f docker-compose.prod.yml up -d",
     "prod:stop": "docker compose -f docker-compose.prod.yml down",
     "prod:logs": "docker compose -f docker-compose.prod.yml logs -f",
+    "prod-www:build": "docker compose -f docker-compose.prod-www.yml build --no-cache",
+    "prod-www:up": "docker compose -f docker-compose.prod-www.yml up -d",
+    "prod-www:stop": "docker compose -f docker-compose.prod-www.yml down",
+    "prod-www:logs": "docker compose -f docker-compose.prod-www.yml logs -f",
+    "mkcert": "mkcert -install && mkcert localhost",
+    "ssl:init": "chmod +x deploy/nginx/init-ssl.sh && ./deploy/nginx/init-ssl.sh",
     "docker:clean": "docker compose down -v && docker builder prune -f",
     "docker:purge": "docker compose down -v && docker system prune -a --volumes -f"
   },

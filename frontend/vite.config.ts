@@ -18,6 +18,12 @@ export default defineConfig({
     fs: {
       allow: [".."],
     },
+    proxy: {
+      "/api": {
+        target: "http://backend:3000",
+        changeOrigin: true,
+      },
+    },
   },
   optimizeDeps: {
     exclude: ["@coremongo/shared"],

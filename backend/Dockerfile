@@ -35,4 +35,4 @@ COPY --chown=node:node --from=build /usr/src/app/backend/dist ./backend/dist
 COPY --chown=node:node --from=build /usr/src/app/shared/dist ./shared/dist
 
 WORKDIR /usr/src/app/backend
-CMD ["node", "dist/server.js"]
+CMD ["node", "dist/backend/src/server.js"]

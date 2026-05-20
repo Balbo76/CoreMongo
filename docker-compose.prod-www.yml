@@ -6,14 +6,22 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./deploy/nginx/nginx.prod.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./localhost.pem:/etc/nginx/ssl/localhost.pem:ro
-      - ./localhost-key.pem:/etc/nginx/ssl/localhost-key.pem:ro
+      - ./deploy/nginx/nginx.prod-www.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
     depends_on:
       - frontend
       - backend
     networks:
       - react-express
+
+  certbot:
+    image: certbot/certbot
+    restart: always
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt:rw
+      - ./certbot/www:/var/www/certbot:rw
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   frontend:
     build:
@@ -37,7 +45,7 @@ services:
     environment:
       - NODE_ENV=production
       - MONGO_URI=mongodb://admin:pass@mongo:27017/provolone?authSource=admin
-      - JWT_SECRET=dev_secret_only
+      - JWT_SECRET=una_stringa_segreta_e_molto_lunga_per_i_token_jwt
     depends_on:
       - mongo
     networks:
@@ -48,7 +56,7 @@ services:
     restart: always
     image: mongo:6.0
     volumes:
-      - mongo_local_data:/data/db
+      - mongo_prod_data:/data/db
     networks:
       - express-mongo
     expose:
@@ -62,4 +70,4 @@ networks:
   express-mongo:
 
 volumes:
-  mongo_local_data:
+  mongo_prod_data:

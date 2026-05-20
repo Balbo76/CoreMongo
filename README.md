@@ -10,36 +10,40 @@ Il progetto è strutturato come un **Monorepo** utilizzando npm workspaces, perm
 
 ### 💻 Frontend (React Router 7)
 L'applicazione client è costruita per offrire un'esperienza utente fluida e reattiva, sfruttando le potenzialità del nuovo **React Router 7** (precedentemente Remix).
-- **Core Stack**: `React 19` e `React Router 7` per il rendering e il routing.
-- **Styling**: `TailwindCSS v4` per un design moderno e scalabile.
-- **UI Components**: `Headless UI` per componenti accessibili e `Framer Motion` per animazioni e transizioni di pagina (`PageTransition.tsx`).
-- **Autenticazione**: Gestione delle sessioni tramite JWT salvati in modo sicuro, con logica di protezione delle rotte centralizzata in `_protected.tsx`.
-- **Layout**: Sistema modulare con `DashboardLayout.tsx` per separare la struttura della dashboard dalla logica di navigazione.
+- **Core Stack**: `React 19` e `React Router 7`.
+- **Styling**: `TailwindCSS v4`.
+- **UI Components**: `Headless UI` e `Framer Motion` per animazioni (`PageTransition.tsx`).
+- **Autenticazione**: JWT gestiti via cookie/header sicuri.
+- **Layout**: Sistema modulare con `DashboardLayout.tsx`.
 
 ### ⚙️ Backend (Express 5)
-L'API REST è progettata seguendo i principi di modularità e sicurezza, utilizzando le ultime versioni del framework Express.
-- **Framework**: `Express 5` per una gestione ottimizzata delle richieste e delle rotte.
-- **Database**: `MongoDB` interfacciato tramite `Mongoose`, garantendo schemi di dati chiari e validazione ODM.
-- **Sicurezza**: Implementazione di `Helmet.js` per gli header di sicurezza, `express-rate-limit` per la prevenzione di attacchi brute-force e `mongo-sanitize` per bloccare NoSQL Injection.
-- **Middleware**: Sistema centralizzato per la gestione degli errori (`errorHandler.ts`) e middleware di validazione basati su Zod.
-- **Autenticazione**: Hashing delle password con `Bcrypt` e generazione di token tramite `jsonwebtoken`.
+L'API REST è progettata seguendo i principi di modularità e sicurezza.
+- **Framework**: `Express 5`.
+- **Database**: `MongoDB` interfacciato tramite `Mongoose`.
+- **Sicurezza**: `Helmet.js`, `express-rate-limit` e `mongo-sanitize`.
+- **Validazione**: Middleware basati su **Zod** per il controllo degli input.
 
 ### 📦 Shared Package
-Il cuore della coerenza del progetto risiede nel pacchetto `/shared`.
-- **Single Source of Truth**: Gli schemi di validazione `Zod` sono definiti qui e utilizzati sia dal backend (per validare le request) che dal frontend (per la validazione dei form).
-- **Type Safety**: Condivisione dei tipi TypeScript per assicurare che i dati siano coerenti lungo tutto il flusso (API -> Client).
+- **Single Source of Truth**: Gli schemi di validazione `Zod` e i tipi TypeScript sono condivisi tra frontend e backend per garantire coerenza totale dei dati.
 
 ---
 
-## 🛡️ Sicurezza Implementata
+## 🛡️ Sicurezza e HTTPS
 
-La sicurezza è stata gestita attraverso diversi livelli di protezione:
+Il progetto implementa una gestione avanzata dell'HTTPS sia in locale che in produzione.
 
-1.  **Validazione degli Input:** Ogni richiesta al backend viene verificata tramite schemi Zod definiti nel pacchetto shared.
-2.  **Protezione Database:** Utilizzo di `mongo-sanitize` per prevenire attacchi di tipo NoSQL Injection.
-3.  **Header HTTP:** Configurazione di header di sicurezza tramite `Helmet.js` (protezione XSS, Clickjacking, ecc.).
-4.  **Rate Limiting:** Limitazione delle richieste per IP per mitigare tentativi di brute-force.
-5.  **Crittografia:** Hashing delle password tramite Bcrypt prima del salvataggio nel database.
+### 1. Local HTTPS (mkcert) - Default Prod Mode
+Per testare l'applicazione in un ambiente identico alla produzione ma sulla propria macchina, utilizziamo **mkcert**.
+1.  **Installa mkcert**: `brew install mkcert` (macOS) o `sudo apt install mkcert` (Linux).
+2.  **Genera certificati**: `npm run mkcert`.
+3.  **Avvia**: `npm run prod:up`.
+4.  **Accesso**: `https://localhost`.
+
+### 2. Production SSL (Certbot & Let's Encrypt)
+Per il deploy su un server pubblico con un dominio reale:
+1.  **Configura**: Modifica il dominio in `deploy/nginx/nginx.prod-www.conf` e `deploy/nginx/init-ssl.sh`.
+2.  **Inizializza SSL**: `npm run ssl:init`. Questo script gestirà il challenge di Let's Encrypt.
+3.  **Avvia**: `npm run prod-www:up`.
 
 ---
 
@@ -50,89 +54,44 @@ La sicurezza è stata gestita attraverso diversi livelli di protezione:
 | **React Router 7** | Framework Frontend & Routing | 7.15.0 |
 | **Express 5** | Framework Backend API | 5.2.1 |
 | **MongoDB / Mongoose** | Database NoSQL & ODM | Mongoose 9.6.2 |
-| **TypeScript** | Linguaggio di programmazione | 6.0.3 (Backend) / 5.9.3 (Frontend) |
+| **TypeScript** | Linguaggio di programmazione | 6.0.3+ |
 | **Zod** | Validazione dati (Shared) | 4.4.3 |
 | **TailwindCSS** | Styling (Utility-first CSS) | 4.2.2 |
-| **Headless UI** | Componenti UI accessibili | 2.2.10 |
-| **Framer Motion** | Animazioni e Transizioni | 12.38.0 |
-| **JWT / Bcrypt** | Sicurezza e Autenticazione | - |
+| **Nginx** | Reverse Proxy & SSL Gateway | Alpine |
+| **Certbot** | Gestione SSL Let's Encrypt | - |
 | **Docker** | Containerizzazione | - |
-| **Vitest** | Unit & Integration Testing | 3.0.0 |
 
 ---
 
-## 📈 Stato del Progetto
+## ⚙️ Setup & Comandi
 
-### ✅ Completato
-- [x] Setup dell'architettura Monorepo.
-- [x] Sistema di autenticazione e protezione delle rotte.
-- [x] Implementazione dei principali middleware di sicurezza.
-- [x] Refactoring del layout della dashboard per una migliore modularità.
-- [x] Dockerizzazione dell'intero stack.
-
-### 🛠️ Da Implementare
-- [ ] Estensione della copertura dei test (attualmente presenti test base per l'autenticazione).
-- [ ] Introduzione di Skeleton Screens per i caricamenti asincroni.
-- [ ] Configurazione di una pipeline CI/CD per test e linting automatizzati.
-
----
-
-## ⚙️ Setup
-
-Il progetto è configurato per essere gestito comodamente tramite **Docker** e script **NPM** centralizzati nella root.
-
-### 1. Configurazione Variabili d'Ambiente
-Prima di iniziare, crea i file `.env` nelle cartelle `frontend` e `backend` partendo dai file `.env.example`:
+### 1. Variabili d'Ambiente
 ```bash
 cp frontend/.env.example frontend/.env
 cp backend/.env.example backend/.env
 ```
 
-### 2. Gestione tramite NPM Scripts (Consigliato)
-Dalla root del progetto, puoi utilizzare i seguenti comandi per gestire l'intero stack Docker:
+### 2. Script di Gestione (Root)
 
-- **Avvio Sviluppo:**
-  ```bash
-  npm run docker:dev
-  ```
-- **Build Completa (senza cache):**
-  ```bash
-  npm run docker:build
-  ```
-- **Arresto Stack:**
-  ```bash
-  npm run docker:stop
-  ```
-- **Visualizzazione Log:**
-  ```bash
-  npm run docker:logs
-  ```
-- **Esecuzione Test:**
-  ```bash
-  npm run test
-  ```
+| Comando | Descrizione | Ambiente |
+| :--- | :--- | :--- |
+| `npm run docker:dev` | Avvio rapido per sviluppo (HTTP) | Docker Compose base |
+| `npm run mkcert` | Genera chiavi SSL locali per localhost | Locale |
+| `npm run prod:up` | **Default Prod**: Avvio HTTPS su localhost | `docker-compose.prod.yml` |
+| `npm run prod-www:up`| Avvio HTTPS su Dominio Reale | `docker-compose.prod-www.yml` |
+| `npm run ssl:init` | Primo setup certificati Let's Encrypt | Certbot |
+| `npm run test` | Esegue la suite di test nel container | Backend |
+| `npm run docker:clean`| Pulisce volumi e builder cache | - |
 
-### 3. Modalità Produzione
-Per testare l'applicazione in un ambiente simile alla produzione:
+### 3. Accesso ai Servizi
 
-- **Build e Avvio Produzione:**
-  ```bash
-  npm run prod:build && npm run prod:up
-  ```
-- **Arresto Produzione:**
-  ```bash
-  npm run prod:stop
-  ```
-- **Log Produzione:**
-  ```bash
-  npm run prod:logs
-  ```
+**Modalità Sviluppo (`docker:dev`):**
+- **Frontend**: `http://localhost:3000`
+- **Backend**: `http://localhost:3001`
 
-### 4. Accesso ai Servizi
-Una volta avviato lo stack:
-- **Frontend:** `http://localhost:3000`
-- **Backend:** `http://localhost:3001`
-- **Mongo Express:** `http://localhost:8081` (Interfaccia web per MongoDB)
+**Modalità Produzione Locale (`prod:up`):**
+- **Frontend/API Gateway**: `https://localhost` (Porte 80/443)
+- **Backend**: Nascosto dietro Nginx
 
 ---
 *Progetto creato a scopo didattico e professionale per testare l'integrazione di tecnologie moderne.*
