@@ -1,29 +1,50 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
+import globals from 'globals';
 
 export default tseslint.config(
-    // Configurazione applicata a tutti i file JavaScript e TypeScript
+    // 1. GLOBAL IGNORES
+    {
+      ignores: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/build/**',
+        '**/public/**',
+        '.react-router/**',
+      ],
+    },
+
+    // 2. BASE TYPESCRIPT RULES (All files)
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
+
+    // 3. BACKEND SCOPE (Node.js)
     {
-        // Specifica quali file monitorare
-        files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-        rules: {
-            // Qui puoi personalizzare la severità delle regole
-            '@typescript-eslint/no-explicit-any': 'warn',      // Ti avvisa se usi "any" esplicito
-            '@typescript-eslint/no-unused-vars': ['warn', {    // Ti avvisa se dichiari variabili e non le usi
-                'argsIgnorePattern': '^_|^req|^res|^next'        // Ignora req, res, next nei middleware Express
-            }],
-            'no-console': 'off'                                 // Permette i console.log nel backend
+      files: ['backend/src/**/*.ts'],
+      languageOptions: {
+        globals: {
+          ...globals.node,
         },
+      },
+      rules: {
+        '@typescript-eslint/no-unused-vars': ['warn', {
+          'argsIgnorePattern': '^_|^req|^res|^next'
+        }],
+        'no-console': 'off', // backend needs logs
+      },
     },
+
+    // 4. FRONTEND SCOPE (React/Browser)
     {
-        // Ignora le cartelle di build e i moduli
-        ignores: [
-            '**/node_modules/**',
-            '**/dist/**',
-            '**/build/**',
-            'frontend/build/**', // o la cartella di output del tuo frontend
-        ],
+      files: ['frontend/app/**/*.{ts,tsx}'],
+      languageOptions: {
+        globals: {
+          ...globals.browser,
+        },
+      },
+      rules: {
+        'no-console': 'warn', // frontend should avoid logs in prod
+        '@typescript-eslint/no-explicit-any': 'warn',
+      },
     }
 );
