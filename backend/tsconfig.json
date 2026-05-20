@@ -2,16 +2,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "CommonJS",
+    "ignoreDeprecations": "6.0",
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@coremongo/shared": ["../shared/src/index.ts"]
+    }
   },
-  "include": ["src/**/*", "tests/**/*"],
-  "exclude": ["node_modules", "tests/**/*.test.ts", "tests/**/*.spec.ts"],
-  "paths": {
-    "@coremongo/shared": ["../shared/src/index.ts"]
-  }
+  "include": ["src/**/*", "tests/**/*", "../shared/src/**/*"],
+  "exclude": ["node_modules", "tests/**/*.test.ts", "tests/**/*.spec.ts"]
 }
