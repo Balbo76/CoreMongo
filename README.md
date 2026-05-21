@@ -1,97 +1,156 @@
-# 🧀 CoreMongo - Dashboard Project
+# 🧀 CoreMongo - Dashboard Amministrativa Professionale
 
-**CoreMongo** è un progetto di dashboard amministrativa full-stack sviluppato per esplorare l'integrazione tra React Router 7 ed Express 5 in un ambiente monorepo. L'obiettivo principale è l'applicazione di pratiche solide per la sicurezza, la gestione dei dati e l'organizzazione del codice.
+**CoreMongo** è una dashboard amministrativa full-stack robusta, progettata con un'architettura moderna e ad alte prestazioni. Il progetto funge da implementazione di riferimento per l'integrazione di **React Router 7 (Remix)** con **Express 5** in un ambiente **Monorepo** completamente tipizzato.
 
----
-
-## 🏗️ Architettura e Funzionalità
-
-Il progetto è strutturato come un **Monorepo** utilizzando npm workspaces, permettendo una gestione centralizzata del codice e una condivisione efficiente di tipi e logiche tra frontend e backend.
-
-### 💻 Frontend (React Router 7)
-L'applicazione client è costruita per offrire un'esperienza utente fluida e reattiva, sfruttando le potenzialità del nuovo **React Router 7** (precedentemente Remix).
-- **Core Stack**: `React 19` e `React Router 7`.
-- **Styling**: `TailwindCSS v4`.
-- **UI Components**: `Headless UI` e `Framer Motion` per animazioni (`PageTransition.tsx`).
-- **Autenticazione**: JWT gestiti via cookie/header sicuri.
-- **Layout**: Sistema modulare con `DashboardLayout.tsx`.
-
-### ⚙️ Backend (Express 5)
-L'API REST è progettata seguendo i principi di modularità e sicurezza.
-- **Framework**: `Express 5`.
-- **Database**: `MongoDB` interfacciato tramite `Mongoose`.
-- **Sicurezza**: `Helmet.js`, `express-rate-limit` e `mongo-sanitize`.
-- **Validazione**: Middleware basati su **Zod** per il controllo degli input.
-
-### 📦 Shared Package
-- **Single Source of Truth**: Gli schemi di validazione `Zod` e i tipi TypeScript sono condivisi tra frontend e backend per garantire coerenza totale dei dati.
+L'obiettivo è fornire una base solida che enfatizzi la sicurezza, la scalabilità e l'esperienza di sviluppo, integrando un livello di validazione condiviso e strategie di deployment containerizzate avanzate.
 
 ---
 
-## 🛡️ Sicurezza e HTTPS
+## 🚀 Funzionalità Principali
 
-Il progetto implementa una gestione avanzata dell'HTTPS sia in locale che in produzione.
-
-### 1. Local HTTPS (mkcert) - Default Prod Mode
-Per testare l'applicazione in un ambiente identico alla produzione ma sulla propria macchina, utilizziamo **mkcert**.
-1.  **Installa mkcert**: `brew install mkcert` (macOS) o `sudo apt install mkcert` (Linux).
-2.  **Genera certificati**: `npm run mkcert`.
-3.  **Avvia**: `npm run prod:up`.
-4.  **Accesso**: `https://localhost`.
-
-### 2. Production SSL (Certbot & Let's Encrypt)
-Per il deploy su un server pubblico con un dominio reale:
-1.  **Configura**: Modifica il dominio in `deploy/nginx/nginx.prod-www.conf` e `deploy/nginx/init-ssl.sh`.
-2.  **Inizializza SSL**: `npm run ssl:init`. Questo script gestirà il challenge di Let's Encrypt.
-3.  **Avvia**: `npm run prod-www:up`.
+- **Architettura Monorepo Unificata**: Gestita tramite npm workspaces per una condivisione fluida di codice, tipi e logiche tra frontend e backend.
+- **Framework React Router 7**: Sfrutta le ultime capacità client/server per un'esperienza utente reattiva e veloce.
+- **Backend Express 5**: Un'API modulare e sicura costruita sull'ultima evoluzione di Express.
+- **Validazione Condivisa**: Schemi **Zod** e tipi TypeScript condivisi tra frontend e backend per garantire una "Single Source of Truth".
+- **Autenticazione Avanzata**: Sistema sicuro basato su JWT con rotte protette e gestione delle sessioni.
+- **Interfaccia UI/UX Moderna**:
+  - **TailwindCSS v4**: Styling di nuova generazione utility-first.
+  - **Headless UI**: Componenti UI accessibili e pronti all'uso.
+  - **Framer Motion**: Transizioni di pagina fluide e animazioni interattive.
+- **Sicurezza di Grado Production**:
+  - **Helmet.js** per l'hardening degli header HTTP lato backend.
+  - **Hardening Nginx**: Implementazione di header di sicurezza (`X-Frame-Options`, `CSP`, `X-Content-Type-Options`) per protezione totale contro Clickjacking e attacchi lato client.
+  - **Rate Limiting** per prevenire attacchi brute-force.
+  - **Sanitizzazione MongoDB** per proteggere da NoSQL injection.
+  - **Supporto HTTPS/SSL Completo** (sia locale che produzione).
+- **DevOps Integrato**: Build Docker multi-stage, reverse proxy Nginx e orchestrazione automatizzata SSL.
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Tecnologia | Utilizzo | Versione |
-| :--- | :--- | :--- |
-| **React Router 7** | Framework Frontend & Routing | 7.15.0 |
-| **Express 5** | Framework Backend API | 5.2.1 |
-| **MongoDB / Mongoose** | Database NoSQL & ODM | Mongoose 9.6.2 |
-| **TypeScript** | Linguaggio di programmazione | 6.0.3+ |
-| **Zod** | Validazione dati (Shared) | 4.4.3 |
-| **TailwindCSS** | Styling (Utility-first CSS) | 4.2.2 |
-| **Nginx** | Reverse Proxy & SSL Gateway | Alpine |
-| **Certbot** | Gestione SSL Let's Encrypt | - |
-| **Docker** | Containerizzazione | - |
+### Frontend
+- **Framework**: [React Router 7](https://reactrouter.com/) (v7.15.0)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/) (v4.2.2)
+- **Componenti**: Headless UI, Framer Motion
+- **Tooling**: Vite, TypeScript
+
+### Backend
+- **Framework**: [Express 5](https://expressjs.com/) (v5.2.1)
+- **Database**: [MongoDB](https://www.mongodb.com/) via [Mongoose](https://mongoosejs.com/) (v9.6.2)
+- **Validazione**: [Zod](https://zod.dev/) (v4.4.3)
+- **Sicurezza**: Helmet, Express-Rate-Limit, BCrypt, JWT
+
+### Infrastruttura
+- **Containerizzazione**: Docker & Docker Compose
+- **Reverse Proxy**: Nginx (Alpine)
+- **SSL**: Certbot (Let's Encrypt) & mkcert (Locale)
 
 ---
 
-## ⚙️ Setup & Comandi
+## 📂 Struttura del Progetto
 
-### 1. Variabili d'Ambiente
+```text
+CoreMongo/
+├── backend/            # API Express 5
+│   ├── src/
+│   │   ├── middleware/ # Auth, validazione e gestione errori
+│   │   ├── models/     # Schemi Mongoose
+│   │   ├── routes/     # Endpoint API (Auth, User)
+│   │   └── validations/# Logica di validazione specifica per le rotte
+│   └── tests/          # Suite di test (Vitest + Supertest)
+├── frontend/           # Applicazione React Router 7
+│   ├── app/
+│   │   ├── components/ # Componenti UI modulari (Admin, UI, Form)
+│   │   ├── routes/     # Pagine e logica di routing
+│   │   └── utils/      # Helper lato client (Auth, API)
+│   └── public/         # Asset statici
+├── shared/             # Logica e Tipi Condivisi (NPM Workspace)
+│   └── src/            # Schemi Zod e tipi globali
+├── deploy/             # Configurazioni di deployment
+│   └── nginx/          # Configurazioni Nginx per vari ambienti
+└── docker-compose.yml  # File di orchestrazione (Dev, Prod, SSL)
+```
+
+---
+
+## 🚦 Inizio Rapido
+
+### 1. Prerequisiti
+- [Node.js](https://nodejs.org/) (v20+)
+- [Docker](https://www.docker.com/) & Docker Compose
+- [mkcert](https://github.com/FiloSottile/mkcert) (per test HTTPS in locale)
+
+### 2. Configurazione Ambiente
+Configura le variabili d'ambiente per entrambi i servizi:
 ```bash
 cp frontend/.env.example frontend/.env
 cp backend/.env.example backend/.env
 ```
 
-### 2. Script di Gestione (Root)
-
-| Comando | Descrizione | Ambiente |
-| :--- | :--- | :--- |
-| `npm run docker:dev` | Avvio rapido per sviluppo (HTTP) | Docker Compose base |
-| `npm run mkcert` | Genera chiavi SSL locali per localhost | Locale |
-| `npm run prod:up` | **Default Prod**: Avvio HTTPS su localhost | `docker-compose.prod.yml` |
-| `npm run prod-www:up`| Avvio HTTPS su Dominio Reale | `docker-compose.prod-www.yml` |
-| `npm run ssl:init` | Primo setup certificati Let's Encrypt | Certbot |
-| `npm run test` | Esegue la suite di test nel container | Backend |
-| `npm run docker:clean`| Pulisce volumi e builder cache | - |
-
-### 3. Accesso ai Servizi
-
-**Modalità Sviluppo (`docker:dev`):**
+### 3. Modalità Sviluppo (HTTP)
+Avvia l'intero stack in modalità sviluppo:
+```bash
+npm run docker:dev
+```
 - **Frontend**: `http://localhost:3000`
-- **Backend**: `http://localhost:3001`
+- **Backend API**: `http://localhost:3001`
 
-**Modalità Produzione Locale (`prod:up`):**
-- **Frontend/API Gateway**: `https://localhost` (Porte 80/443)
-- **Backend**: Nascosto dietro Nginx
+### 4. Simulazione Produzione Locale (HTTPS)
+Testa le build di produzione e la terminazione SSL sulla tua macchina:
+```bash
+npm run mkcert      # Genera CA locale e certificati
+npm run prod:up     # Avvia Nginx + SSL + Build di produzione
+```
+- **Accesso**: `https://localhost`
 
 ---
-*Progetto creato a scopo didattico e professionale per testare l'integrazione di tecnologie moderne.*
+
+## 🌐 Deployment in Produzione
+
+Per il deploy su un server pubblico con un dominio reale:
+
+1.  **Configura il Dominio**: Aggiorna i nomi di dominio in `deploy/nginx/nginx.prod-www.conf` e `deploy/nginx/init-ssl.sh`.
+2.  **Inizializza SSL**:
+    ```bash
+    npm run ssl:init
+    ```
+    Questo script automatizza il challenge di Certbot e la generazione dei certificati.
+3.  **Avvia la Produzione**:
+    ```bash
+    npm run prod-www:up
+    ```
+
+---
+
+## 🧪 Test e Qualità
+
+- **Test Unitari/Integrazione**: Esegui la suite di test del backend all'interno del container:
+  ```bash
+  npm run test
+  ```
+- **Linting**: Esegui ESLint su tutto il monorepo:
+  ```bash
+  npm run lint
+  ```
+- **Type Checking**: TypeScript è rigorosamente applicato per garantire stabilità e prevenire errori a runtime.
+
+---
+
+## 🤝 Contribuire
+
+Questo progetto è stato sviluppato come dimostrazione professionale di pattern full-stack moderni. I contributi sono benvenuti!
+1.  Fai un Fork del progetto.
+2.  Crea il tuo branch per la funzionalità (`git checkout -b feature/NuovaFeature`).
+3.  Fai il commit delle tue modifiche (`git commit -m 'Aggiunta NuovaFeature'`).
+4.  Pusha il branch (`git push origin feature/NuovaFeature`).
+5.  Apri una Pull Request.
+
+---
+
+## 📜 Licenza
+
+Distribuito sotto Licenza MIT. Consulta il file `LICENSE` per ulteriori informazioni.
+
+---
+*Sviluppato con ❤️ per esplorare le frontiere delle moderne tecnologie web.*
