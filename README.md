@@ -23,7 +23,7 @@ L'obiettivo è fornire una base solida che enfatizzi la sicurezza, la scalabilit
   - **Rate Limiting** per prevenire attacchi brute-force.
   - **Sanitizzazione MongoDB** per proteggere da NoSQL injection.
   - **Supporto HTTPS/SSL Completo** (sia locale che produzione).
-- **DevOps Integrato**: Build Docker multi-stage, reverse proxy Nginx e orchestrazione automatizzata SSL.
+- **DevOps Integrato**: Build Docker multi-stage e reverse proxy Nginx.
 
 ---
 
@@ -44,7 +44,7 @@ L'obiettivo è fornire una base solida che enfatizzi la sicurezza, la scalabilit
 ### Infrastruttura
 - **Containerizzazione**: Docker & Docker Compose
 - **Reverse Proxy**: Nginx (Alpine)
-- **SSL**: Certbot (Let's Encrypt) & mkcert (Locale)
+- **SSL**: mkcert (Locale)
 
 ---
 
@@ -69,7 +69,7 @@ CoreMongo/
 │   └── src/            # Schemi Zod e tipi globali
 ├── deploy/             # Configurazioni di deployment
 │   └── nginx/          # Configurazioni Nginx per vari ambienti
-└── docker-compose.yml  # File di orchestrazione (Dev, Prod, SSL)
+└── docker-compose.yml  # File di orchestrazione (Dev, Prod)
 ```
 
 ---
@@ -103,23 +103,6 @@ npm run mkcert      # Genera CA locale e certificati
 npm run prod:up     # Avvia Nginx + SSL + Build di produzione
 ```
 - **Accesso**: `https://localhost`
-
----
-
-## 🌐 Deployment in Produzione
-
-Per il deploy su un server pubblico con un dominio reale:
-
-1.  **Configura il Dominio**: Aggiorna i nomi di dominio in `deploy/nginx/nginx.prod-www.conf` e `deploy/nginx/init-ssl.sh`.
-2.  **Inizializza SSL**:
-    ```bash
-    npm run ssl:init
-    ```
-    Questo script automatizza il challenge di Certbot e la generazione dei certificati.
-3.  **Avvia la Produzione**:
-    ```bash
-    npm run prod-www:up
-    ```
 
 ---
 
