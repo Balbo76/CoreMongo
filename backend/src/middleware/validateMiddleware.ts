@@ -11,8 +11,11 @@ export const validate = (schema: ZodTypeAny) =>
       await schema.parseAsync(req.body);
       next();
     } catch (error: any) {
-      if (error.name === 'ZodError') {
-        return res.status(400).json({ errors: error.errors });
+      if (error instanceof ZodError) {
+        return res.status(400).json({
+          message: 'Errore di validazione',
+          errors: error.issues
+        });
       }
       return res.status(500).json({ message: "Errore interno durante la validazione" });
     }
