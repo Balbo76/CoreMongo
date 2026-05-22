@@ -1,11 +1,10 @@
-import { redirect, type ClientActionFunctionArgs } from "react-router";
-import type { Route } from "./+types/home";
+import { type ClientActionFunctionArgs } from "react-router";
 import { RegisterForm } from "../components/registerForm";
 import { redirectIfAuthenticated } from "../utils/auth";
 import { TopBar } from '../components/topBar';
 import { registerSchema } from "@coremongo/shared";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
     return [
         { title: "Registrazione - CoreMongo" },
         { name: "description", content: "Crea un nuovo account su CoreMongo" },
@@ -49,7 +48,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         }
 
         return { success: "Account creato! Reindirizzamento al login..." };
-    } catch (e) {
+    } catch {
         return { error: "Errore di connessione al server" };
     }
 }

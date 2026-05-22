@@ -69,7 +69,8 @@ CoreMongo/
 │   └── src/            # Schemi Zod e tipi globali
 ├── deploy/             # Configurazioni di deployment
 │   └── nginx/          # Configurazioni Nginx per vari ambienti
-└── docker-compose.yml  # File di orchestrazione (Dev, Prod)
+├── compose.yaml        # Orchestrazione Sviluppo
+└── docker-compose.prod.yml # Orchestrazione Produzione
 ```
 
 ---
@@ -99,7 +100,7 @@ npm run docker:dev
 ### 4. Simulazione Produzione Locale (HTTPS)
 Testa le build di produzione e la terminazione SSL sulla tua macchina:
 ```bash
-npm run mkcert      # Genera CA locale e certificati
+npm run mkcert      # Genera CA locale e certificati (installa CA nel sistema)
 npm run prod:up     # Avvia Nginx + SSL + Build di produzione
 ```
 - **Accesso**: `https://localhost`
@@ -108,7 +109,7 @@ npm run prod:up     # Avvia Nginx + SSL + Build di produzione
 
 ## 🧪 Test e Qualità
 
-- **Test Unitari/Integrazione**: Esegui la suite di test del backend all'interno del container:
+- **Test Unitari/Integrazione**: Assicurati che i container siano avviati (`npm run docker:dev`), quindi esegui la suite di test del backend:
   ```bash
   npm run test
   ```

@@ -10,7 +10,8 @@ export default tseslint.config(
         '**/dist/**',
         '**/build/**',
         '**/public/**',
-        '.react-router/**',
+        'frontend/.react-router/**',
+        'shared/src/**/*.js',
       ],
     },
 

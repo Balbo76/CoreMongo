@@ -3,7 +3,7 @@ import { Router } from "express";
 import { User } from "../models/Users";
 import { catchAsync } from '../utils/catchAsync';
 import { AppError } from '../utils/AppError';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 
 const router = Router();
 

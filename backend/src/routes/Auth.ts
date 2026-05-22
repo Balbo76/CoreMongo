@@ -18,7 +18,7 @@ router.post('/register', validate(registerSchema), catchAsync(async (req: Reques
         return next(new AppError("Questa email è già registrata", 400));
     }
 
-    const saltRounds = 10;
+    const saltRounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = new User({
         email,
@@ -46,7 +46,7 @@ router.post('/login', validate(loginSchema), catchAsync(async (req: Request, res
 
     const token = jwt.sign(
         { userId: user._id, email: user.email },
-        process.env.JWT_SECRET as string,
+        process.env.JWT_SECRET!,
         { expiresIn: '8h' }
     );
 

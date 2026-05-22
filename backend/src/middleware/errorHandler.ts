@@ -1,12 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
-import { AppError } from '../utils/AppError';
+
+interface CustomError extends Error {
+  statusCode?: number;
+  status?: string;
+  isOperational?: boolean;
+}
 
 /**
  * Middleware globale per la gestione degli errori.
  * Intercetta ogni errore passato a next() e restituisce una risposta JSON standardizzata.
  */
 export const globalErrorHandler = (
-  err: any,
+  err: CustomError,
   req: Request,
   res: Response,
   next: NextFunction

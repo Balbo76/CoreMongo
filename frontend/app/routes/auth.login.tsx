@@ -1,11 +1,10 @@
 import { redirect, type ClientActionFunctionArgs } from "react-router";
-import type { Route } from "./+types/auth.login";
 import { LoginForm } from "../components/loginForm";
 import { redirectIfAuthenticated } from "../utils/auth";
 import { TopBar } from "../components/topBar";
 import { loginSchema } from "@coremongo/shared";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
     return [
         { title: "Login" },
         { name: "description", content: "" },
@@ -50,7 +49,7 @@ export async function clientAction({ request }: ClientActionFunctionArgs) {
         const data = await response.json();
         localStorage.setItem("coremongo_token", data.token);
         return redirect("/admin");
-    } catch (e) {
+    } catch {
         return { error: "Errore di connessione al server" };
     }
 }

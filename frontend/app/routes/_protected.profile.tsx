@@ -1,7 +1,8 @@
-import { useLoaderData, redirect, useOutletContext } from "react-router";
+import { useOutletContext } from "react-router";
+import type { User } from "@coremongo/shared";
 
 export default function Profile() {
-    const { user }: any = useOutletContext();
+    const { user } = useOutletContext<{ user: User }>();
 
     return (
         <div className="max-w-4xl mx-auto">

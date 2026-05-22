@@ -10,7 +10,7 @@ export const validate = (schema: ZodTypeAny) =>
     try {
       await schema.parseAsync(req.body);
       next();
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof ZodError) {
         return res.status(400).json({
           message: 'Errore di validazione',

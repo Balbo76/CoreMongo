@@ -20,7 +20,7 @@ export async function checkAuth(): Promise<User> {
 
         const userData = await response.json();
         return userData;
-    } catch (error) {
+    } catch {
         localStorage.removeItem("coremongo_token");
         throw redirect("/login");
     }

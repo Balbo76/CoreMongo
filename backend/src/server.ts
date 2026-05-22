@@ -36,7 +36,23 @@ const limiter = rateLimit({
 app.use('/api', limiter);
 
 // Middleware di base
-app.use(cors()); // Permette al frontend di comunicare con il backend
+const allowedOrigins = [
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  'https://localhost' // Per simulazione produzione locale
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Permette richieste senza origin (come mobile app o curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json()); // Permette di leggere i body delle richieste in JSON
 
 app.use('/api/auth', authRoutes);
@@ -55,13 +71,13 @@ const PORT = process.env.PORT || 3000;
 
 const mongoUri = process.env.MONGO_URI;
 
-console.log("--- DEBUG DI CONVERSIONE ---");
-console.log("Valore di MONGO_URI in Node:", mongoUri);
-console.log("Tutte le env lette:", Object.keys(process.env).filter(k => k.includes("MONGO")));
-console.log("----------------------------");
-
 if (!mongoUri) {
     console.error("❌ ERRORE CRITICO: MONGO_URI è undefined nel processo Node!");
+    process.exit(1);
+}
+
+if (!process.env.JWT_SECRET) {
+    console.error("❌ ERRORE CRITICO: JWT_SECRET non configurato!");
     process.exit(1);
 }
 

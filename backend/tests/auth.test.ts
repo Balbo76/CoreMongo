@@ -5,25 +5,26 @@ import express from 'express';
 import authRoutes from '../src/routes/Auth';
 import { globalErrorHandler } from '../src/middleware/errorHandler';
 import { User } from '../src/models/Users';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 const app = express();
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use(globalErrorHandler);
 
+let mongoServer: MongoMemoryServer;
+
 beforeAll(async () => {
-    // Usiamo il database reale in Docker ma su una collezione/db di test dedicato
-    // Il nome dell'host è 'mongo' come definito nel compose.yaml
-    const uri = process.env.MONGO_URI_TEST || 'mongodb://admin:pass@mongo:27017/coremongo_test?authSource=admin';
+    mongoServer = await MongoMemoryServer.create();
+    const uri = mongoServer.getUri();
     await mongoose.connect(uri);
-});
+}, 30000);
 
 afterAll(async () => {
-    await mongoose.connection.db.dropDatabase();
     await mongoose.disconnect();
+    if (mongoServer) {
+        await mongoServer.stop();
+    }
 });
 
 afterEach(async () => {

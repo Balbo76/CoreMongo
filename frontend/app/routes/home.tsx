@@ -1,8 +1,7 @@
-import type { Route } from "./+types/home";
 import { Welcome } from "../components/welcome";
 import {redirectIfAuthenticated} from "../utils/auth";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "CIAO React Router App" },
     { name: "description", content: "Welcome, a me, to React Router!" },
