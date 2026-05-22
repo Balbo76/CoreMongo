@@ -4,6 +4,8 @@ Project identity: Full-stack admin dashboard.
 Monorepo with shared validation logic.
 Development environment with compose.yaml.
 Local production environment with docker-compose.prod.yml.
+Everything (frontend, backend, test) work with Docker, no direct access to code.
+Interact with Docker using npm script in composer.json always when it is possible.
 
 ## File Structure
  -`backend/`: Express 5 API.
